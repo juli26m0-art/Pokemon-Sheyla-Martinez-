@@ -114,3 +114,14 @@ botonesHeader.forEach(boton => {
         aplicarFiltros();
     });
 });
+
+// Desplazamiento suave al inicio al presionar la flecha
+const btnVolverArriba = document.querySelector("#btn-volver-arriba");
+if (btnVolverArriba) {
+    btnVolverArriba.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+}

@@ -9,12 +9,8 @@
 <body>
     <header>
         <nav class="nav">
-            <img class="logo" src="image/TituloPoké mon.png" alt="Pokédex Logo">
-
-<li class="nav-item"><button class="btn btn-header fav-btn-header" id="favoritos">❤️ FAVORITOS</button></li>
-
-
-          <ul class="nav-list">
+            <img class="nav-logo" src="/image/Pokédex_logo.png" alt="Logo Pokémon">
+            <ul class="nav-list">
                 <li class="nav-item"><button class="btn btn-header" id="ver-todos">VER TODOS</button></li>
                 <li class="nav-item"><button class="btn btn-header normal" id="normal">NORMAL</button></li>
                 <li class="nav-item"><button class="btn btn-header fire" id="fire">FIRE</button></li>
@@ -36,17 +32,23 @@
                 <li class="nav-item"><button class="btn btn-header fairy" id="fairy">FAIRY</button></li>
             </ul>
         </nav>
-    </header>
 
-<div class="contenedor-busqueda">
-    <input type="text" id="busqueda" placeholder="Buscar Pokémon por nombre o número...">
-</div>
+        <div class="contenedor-busqueda">
+            <input type="text" id="busqueda" placeholder="Buscar Pokémon por nombre o número...">
+        </div>
+
+        <div class="contenedor-favoritos">
+            <button class="btn btn-header fav-btn-header" id="favoritos">❤️ FAVORITOS</button>
+        </div>
+    </header>
 
     <main>
         <div id="todos">
             <div class="pokemon-todos" id="listaPokemon"></div>
         </div>
     </main>
+
+    <button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver al inicio">⬆</button>
 
     <script src="js/main.js"></script>
 </body>
