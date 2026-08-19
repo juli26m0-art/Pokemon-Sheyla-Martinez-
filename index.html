@@ -9,8 +9,12 @@
 <body>
     <header>
         <nav class="nav">
-            <img class="logo" src="/image/Pokédex_logo.png" alt="Pokédex Logo">
-            <ul class="nav-list">
+            <img class="logo" src="image/TituloPoké mon.png" alt="Pokédex Logo">
+
+<li class="nav-item"><button class="btn btn-header fav-btn-header" id="favoritos">❤️ FAVORITOS</button></li>
+
+
+          <ul class="nav-list">
                 <li class="nav-item"><button class="btn btn-header" id="ver-todos">VER TODOS</button></li>
                 <li class="nav-item"><button class="btn btn-header normal" id="normal">NORMAL</button></li>
                 <li class="nav-item"><button class="btn btn-header fire" id="fire">FIRE</button></li>
@@ -33,6 +37,10 @@
             </ul>
         </nav>
     </header>
+
+<div class="contenedor-busqueda">
+    <input type="text" id="busqueda" placeholder="Buscar Pokémon por nombre o número...">
+</div>
 
     <main>
         <div id="todos">

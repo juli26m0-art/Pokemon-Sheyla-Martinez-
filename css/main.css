@@ -164,3 +164,60 @@ main {
     font-weight: bold;
     margin-top: 0.2rem;
 }
+
+
+/* Barra de Búsqueda */
+.contenedor-busqueda {
+    max-width: 500px;
+    margin: 1.5rem auto 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#busqueda {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border-radius: 50px;
+    border: 2px solid #e0e0e0;
+    font-size: 0.95rem;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+#busqueda:focus {
+    border-color: #ff4747;
+    box-shadow: 0 4px 10px rgba(255,71,71,0.15);
+}
+
+/* Botón Favoritos en la Navegación */
+.fav-btn-header {
+    background-color: #ff4747;
+    color: white;
+}
+
+/* Botón Corazón dentro de cada tarjeta */
+.btn-fav {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.btn-fav:hover {
+    transform: scale(1.25);
+}
+
+/* Mensaje sin resultados */
+.no-resultados {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 2rem;
+}

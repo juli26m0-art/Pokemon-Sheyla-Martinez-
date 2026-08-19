@@ -1,27 +1,53 @@
 const listaPokemon = document.querySelector("#listaPokemon");
 const botonesHeader = document.querySelectorAll(".btn-header");
-let URL = "https://pokeapi.co/api/v2/pokemon/";
+const inputBusqueda = document.querySelector("#busqueda");
 
-for (let i = 1; i <= 151; i++) {
-    fetch(URL + i)
-        .then((response) => response.json())
-        .then(data => mostrarPokemon(data))
+const URL = "https://pokeapi.co/api/v2/pokemon/";
+
+let todosLosPokemon = [];
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+let filtroTipoActual = "ver-todos";
+
+// Carga inicial y ordenamiento numérico
+async function cargarPokemones() {
+    listaPokemon.innerHTML = `<p class="no-resultados">Cargando Pokédex...</p>`;
+    
+    const promesas = [];
+    for (let i = 1; i <= 151; i++) {
+        promesas.push(fetch(URL + i).then(res => res.json()));
+    }
+
+    const pokemonesNoOrdenados = await Promise.all(promesas);
+    todosLosPokemon = pokemonesNoOrdenados.sort((a, b) => a.id - b.id);
+    
+    aplicarFiltros();
+}
+
+cargarPokemones();
+
+function mostrarLista(lista) {
+    listaPokemon.innerHTML = "";
+
+    if (lista.length === 0) {
+        listaPokemon.innerHTML = `<p class="no-resultados">No se encontraron Pokémon.</p>`;
+        return;
+    }
+
+    lista.sort((a, b) => a.id - b.id);
+    lista.forEach(poke => mostrarPokemon(poke));
 }
 
 function mostrarPokemon(poke) {
-    let tipos = poke.types.map((type) => `<p class="${type.type.name} tipo">${type.type.name}</p>`);
-    tipos = tipos.join('');
-
-    let pokeId = poke.id.toString();
-    if (pokeId.length === 1) {
-        pokeId = "00" + pokeId;
-    } else if (pokeId.length === 2) {
-        pokeId = "0" + pokeId;
-    }
+    let tipos = poke.types.map((type) => `<p class="${type.type.name} tipo">${type.type.name}</p>`).join('');
+    let pokeId = poke.id.toString().padStart(3, "0");
+    const esFavorito = favoritos.includes(poke.id);
 
     const div = document.createElement("div");
     div.classList.add("pokemon");
     div.innerHTML = `
+        <button class="btn-fav" data-id="${poke.id}">
+            ${esFavorito ? '❤️' : '🤍'}
+        </button>
         <p class="pokemon-id-back">#${pokeId}</p>
         <div class="pokemon-imagen">
             <img src="${poke.sprites.other['official-artwork'].front_default}" alt="${poke.name}">
@@ -40,26 +66,51 @@ function mostrarPokemon(poke) {
             </div>
         </div>
     `;
+
+    const btnFav = div.querySelector(".btn-fav");
+    btnFav.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleFavorito(poke.id);
+    });
+
     listaPokemon.append(div);
 }
 
-botonesHeader.forEach(boton => boton.addEventListener("click", (event) => {
-    const botonId = event.currentTarget.id;
-
-    listaPokemon.innerHTML = "";
-
-    for (let i = 1; i <= 151; i++) {
-        fetch(URL + i)
-            .then((response) => response.json())
-            .then(data => {
-                if(botonId === "ver-todos") {
-                    mostrarPokemon(data);
-                } else {
-                    const tipos = data.types.map(type => type.type.name);
-                    if (tipos.includes(botonId)) {
-                        mostrarPokemon(data);
-                    }
-                }
-            })
+function toggleFavorito(id) {
+    if (favoritos.includes(id)) {
+        favoritos = favoritos.filter(favId => favId !== id);
+    } else {
+        favoritos.push(id);
     }
-}));
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    aplicarFiltros();
+}
+
+function aplicarFiltros() {
+    const texto = inputBusqueda.value.toLowerCase().trim();
+
+    let resultado = todosLosPokemon.filter(poke => {
+        const coincideNombre = poke.name.toLowerCase().includes(texto);
+        const coincideId = poke.id.toString() === texto || poke.id.toString().padStart(3, "0") === texto;
+        return coincideNombre || coincideId;
+    });
+
+    if (filtroTipoActual === "favoritos") {
+        resultado = resultado.filter(poke => favoritos.includes(poke.id));
+    } else if (filtroTipoActual !== "ver-todos") {
+        resultado = resultado.filter(poke => 
+            poke.types.some(t => t.type.name === filtroTipoActual)
+        );
+    }
+
+    mostrarLista(resultado);
+}
+
+inputBusqueda.addEventListener("input", aplicarFiltros);
+
+botonesHeader.forEach(boton => {
+    boton.addEventListener("click", (e) => {
+        filtroTipoActual = e.currentTarget.id;
+        aplicarFiltros();
+    });
+});
