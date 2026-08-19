@@ -7,48 +7,56 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+
     <header>
         <nav class="nav">
-            <img class="nav-logo" src="/image/Pokédex_logo.png" alt="Logo Pokémon">
+            <img src="/image/Pokédex_logo.png" alt="Logo Pokémon" class="nav-logo">
             <ul class="nav-list">
-                <li class="nav-item"><button class="btn btn-header" id="ver-todos">VER TODOS</button></li>
-                <li class="nav-item"><button class="btn btn-header normal" id="normal">NORMAL</button></li>
-                <li class="nav-item"><button class="btn btn-header fire" id="fire">FIRE</button></li>
-                <li class="nav-item"><button class="btn btn-header water" id="water">WATER</button></li>
-                <li class="nav-item"><button class="btn btn-header grass" id="grass">GRASS</button></li>
-                <li class="nav-item"><button class="btn btn-header electric" id="electric">ELECTRIC</button></li>
-                <li class="nav-item"><button class="btn btn-header ice" id="ice">ICE</button></li>
-                <li class="nav-item"><button class="btn btn-header fighting" id="fighting">FIGHTING</button></li>
-                <li class="nav-item"><button class="btn btn-header poison" id="poison">POISON</button></li>
-                <li class="nav-item"><button class="btn btn-header ground" id="ground">GROUND</button></li>
-                <li class="nav-item"><button class="btn btn-header flying" id="flying">FLYING</button></li>
-                <li class="nav-item"><button class="btn btn-header psychic" id="psychic">PSYCHIC</button></li>
-                <li class="nav-item"><button class="btn btn-header bug" id="bug">BUG</button></li>
-                <li class="nav-item"><button class="btn btn-header rock" id="rock">ROCK</button></li>
-                <li class="nav-item"><button class="btn btn-header ghost" id="ghost">GHOST</button></li>
-                <li class="nav-item"><button class="btn btn-header dark" id="dark">DARK</button></li>
-                <li class="nav-item"><button class="btn btn-header dragon" id="dragon">DRAGON</button></li>
-                <li class="nav-item"><button class="btn btn-header steel" id="steel">STEEL</button></li>
-                <li class="nav-item"><button class="btn btn-header fairy" id="fairy">FAIRY</button></li>
+                <li><button class="btn-header ver-todos" id="ver-todos">Ver todos</button></li>
+                <li><button class="btn-header normal" id="normal">Normal</button></li>
+                <li><button class="btn-header fire" id="fire">Fuego</button></li>
+                <li><button class="btn-header water" id="water">Agua</button></li>
+                <li><button class="btn-header grass" id="grass">Planta</button></li>
+                <li><button class="btn-header electric" id="electric">Eléctrico</button></li>
+                <li><button class="btn-header ice" id="ice">Hielo</button></li>
+                <li><button class="btn-header fighting" id="fighting">Lucha</button></li>
+                <li><button class="btn-header poison" id="poison">Veneno</button></li>
+                <li><button class="btn-header ground" id="ground">Tierra</button></li>
+                <li><button class="btn-header flying" id="flying">Volador</button></li>
+                <li><button class="btn-header psychic" id="psychic">Psíquico</button></li>
+                <li><button class="btn-header bug" id="bug">Bicho</button></li>
+                <li><button class="btn-header rock" id="rock">Roca</button></li>
+                <li><button class="btn-header ghost" id="ghost">Fantasma</button></li>
+                <li><button class="btn-header dark" id="dark">Siniestro</button></li>
+                <li><button class="btn-header dragon" id="dragon">Dragón</button></li>
+                <li><button class="btn-header steel" id="steel">Acero</button></li>
+                <li><button class="btn-header fairy" id="fairy">Hada</button></li>
             </ul>
         </nav>
 
         <div class="contenedor-busqueda">
-            <input type="text" id="busqueda" placeholder="Buscar Pokémon por nombre o número...">
+            <input type="text" id="busqueda" placeholder="Buscar por nombre o número (#001)...">
         </div>
 
         <div class="contenedor-favoritos">
-            <button class="btn btn-header fav-btn-header" id="favoritos">❤️ FAVORITOS</button>
+            <button class="btn-header fav-btn-header" id="favoritos">❤️ Favoritos</button>
         </div>
     </header>
 
     <main>
-        <div id="todos">
-            <div class="pokemon-todos" id="listaPokemon"></div>
-        </div>
+        <div id="listaPokemon" class="pokemon-todos"></div>
     </main>
 
-    <button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver al inicio">⬆</button>
+    <!-- Modal de Detalles -->
+    <div id="modal-pokemon" class="modal-overlay hidden">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btn-cerrar-modal">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Botón Volver Arriba -->
+    <button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver arriba">↑</button>
 
     <script src="js/main.js"></script>
 </body>

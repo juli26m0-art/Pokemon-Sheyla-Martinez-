@@ -2,15 +2,34 @@ const listaPokemon = document.querySelector("#listaPokemon");
 const botonesHeader = document.querySelectorAll(".btn-header");
 const inputBusqueda = document.querySelector("#busqueda");
 
+const modalPokemon = document.querySelector("#modal-pokemon");
+const modalBody = document.querySelector("#modal-body");
+const btnCerrarModal = document.querySelector("#btn-cerrar-modal");
+
 const URL = "https://pokeapi.co/api/v2/pokemon/";
 
 let todosLosPokemon = [];
 let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 let filtroTipoActual = "ver-todos";
 
-// Carga inicial y ordenamiento numérico
+// Skeleton Loader antes de cargar
+function mostrarSkeleton() {
+    listaPokemon.innerHTML = "";
+    for (let i = 0; i < 12; i++) {
+        const skeleton = document.createElement("div");
+        skeleton.classList.add("skeleton-card");
+        skeleton.innerHTML = `
+            <div class="skeleton-circle"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+        `;
+        listaPokemon.appendChild(skeleton);
+    }
+}
+
+// Carga inicial
 async function cargarPokemones() {
-    listaPokemon.innerHTML = `<p class="no-resultados">Cargando Pokédex...</p>`;
+    mostrarSkeleton();
     
     const promesas = [];
     for (let i = 1; i <= 151; i++) {
@@ -67,6 +86,10 @@ function mostrarPokemon(poke) {
         </div>
     `;
 
+    // Abrir Modal al hacer clic
+    div.addEventListener("click", () => abrirModal(poke));
+
+    // Botón Favoritos
     const btnFav = div.querySelector(".btn-fav");
     btnFav.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -75,6 +98,44 @@ function mostrarPokemon(poke) {
 
     listaPokemon.append(div);
 }
+
+// Modal de detalles
+function abrirModal(poke) {
+    let pokeId = poke.id.toString().padStart(3, "0");
+    let tipos = poke.types.map((type) => `<p class="${type.type.name} tipo">${type.type.name}</p>`).join('');
+
+    const statsHTML = poke.stats.map(s => {
+        const porcentaje = Math.min((s.base_stat / 150) * 100, 100);
+        return `
+            <div class="stat-bar-group">
+                <span class="stat-name">${s.stat.name.replace('special-', 'sp-')}</span>
+                <span class="stat-val">${s.base_stat}</span>
+                <div class="stat-bar-bg">
+                    <div class="stat-bar-fill" style="width: ${porcentaje}%"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    modalBody.innerHTML = `
+        <div class="modal-header">
+            <span class="pokemon-id">#${pokeId}</span>
+            <h2 class="pokemon-nombre" style="font-size: 1.4rem;">${poke.name}</h2>
+            <img class="modal-img" src="${poke.sprites.other['official-artwork'].front_default}" alt="${poke.name}">
+            <div class="pokemon-tipos">${tipos}</div>
+        </div>
+        <div class="modal-stats-container">
+            ${statsHTML}
+        </div>
+    `;
+
+    modalPokemon.classList.remove("hidden");
+}
+
+btnCerrarModal.addEventListener("click", () => modalPokemon.classList.add("hidden"));
+modalPokemon.addEventListener("click", (e) => {
+    if (e.target === modalPokemon) modalPokemon.classList.add("hidden");
+});
 
 function toggleFavorito(id) {
     if (favoritos.includes(id)) {
@@ -115,13 +176,9 @@ botonesHeader.forEach(boton => {
     });
 });
 
-// Desplazamiento suave al inicio al presionar la flecha
 const btnVolverArriba = document.querySelector("#btn-volver-arriba");
 if (btnVolverArriba) {
     btnVolverArriba.addEventListener("click", () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
